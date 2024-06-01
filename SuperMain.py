@@ -26,7 +26,7 @@ class HardwareHaven: # Класс магазина
     def display_products(self):
         if self.products:
             print("\nСписок продуктов:")
-            # В цикле будут выводится все значения из списка self.products
+            # Будут выводиться все значения из списка self.products
             for idx, product in enumerate(self.products, start=1):
                 print(f"{idx}. {product['name']} - Цена: {product['price']} руб. - В наличии: {product['quantity']}")
         else:
@@ -89,7 +89,7 @@ class HardwareHaven: # Класс магазина
             # Если указанный индекс продукта не найден, выводим сообщение об этом
             print("Продукт с указанным индексом не найден.")
 
-    # Функция сохранения данных в файл product.txt
+    # Функция сохранения данных в файл
     def save_data_from_file(self, list_for_save, filename):
         try:
             with open(filename, 'w', encoding='utf-8') as file:
@@ -125,7 +125,7 @@ class HardwareHaven: # Класс магазина
         except Exception as e:
             print(f"Ошибка при сохранении данных: {e}")
 
-    # Функция загрузки товаров из файла product.txt
+    # Функция загрузки товаров из файла
     def load_data_from_file(self):
         # Загрузка файла product.txt
         try:
@@ -277,16 +277,15 @@ class Customer(Person):
         self.login = login
         self.password = password
 
-# Инициализируем основную функцию, которая будет выполнять основной код программы
+# Инициализируем main функцию
 def main():
     # Создаём объект класса магазина
     shop = HardwareHaven()
 
-    # Инициализируем функцию инициализации пользователя
+    # Инициализируем функцию аутентификации пользователя
     def authentication():
-        # Строчка ниже позволяет выполнять код, до тех пор, пока не выйдем из цикла
         while True:
-            # Инициализируем переменные для корректной работы и избегания ошибок
+            # Инициализируем переменные
             admin_login_file = ""
             admin_password_file = ""
 
@@ -302,11 +301,13 @@ def main():
             choice = input("Выберите действие: ")
 
             if choice == '1': # Если Выбран Администратор
-                # Принимаем значения введёных данных
+
+                # Принимаем значения данных
                 admin_name = input("Никнейм:")
                 admin_login = input("Логин: ")
                 admin_password = input("Пароль: ")
                 admin_found = False # Это надо, чтобы грамотно работали функции переборки файлов
+
                 try:
                     # Открываем файл админа
                     with open('Admin.txt', 'r', encoding='utf-8') as file:
@@ -316,7 +317,7 @@ def main():
                             if line.strip() == f'Админ {admin_name}:':
                                 # Возвращаем true, чтобы удобно перейти к следующей стадии инициализации
                                 admin_found = True
-                            # Когда значение true начинает выполнятся этот код
+                            # Когда значение true начинает выполняться этот код
                             elif admin_found:
                                 # Если после очищения от всего в начале строки остаётся "Логин:", то выполняем
                                 if line.strip().startswith('Логин:'):
@@ -334,7 +335,7 @@ def main():
                         admin.login = admin_login
                         admin.password = admin_password
                         return admin
-                    # Если в файле такого пользователя ненашли
+                    # Если в файле такого пользователя не нашли
                     else:
                         print("Вы ввели неверно логин или пароль:\n"
                               f"{admin_login_file}, {admin_password_file}")
@@ -347,7 +348,7 @@ def main():
                     break
 
             elif choice == '2': # Если выбран Покупатель
-                # Всё тоже самое, что и для админа
+
                 customer_nickname = input("Никнейм:")
                 customer_login = input("Логин: ")
                 customer_password = input("Пароль: ")
@@ -376,22 +377,24 @@ def main():
                 # Выход из цикла authentication
                 break
             elif choice == '3': # Если пользователь хочет зарегистрироваться
-                # Даём выбор
+
                 choice_2 = input("\nКем вы хотите стать?"
                                  "\n1. Админ"
                                  "\n2. Покупатель"
                                  "\n\nВыберите действие: ")
-                # Ставим ограничние на регистрацию, чтобы сторонний пользователь не зарегестрировался под видом админа
+                # Ставим ограничение на регистрацию, чтобы сторонний пользователь не зарегистрировался под видом админа
                 if choice_2 == '1':
                     print("\nВы не можете добавить админа не авторизовавшись.\n"
-                          "Чтобы зарегестрировать нового админа необходимо одному из действующих вас зарегестрировать")
+                          "Чтобы зарегистрировать нового админа необходимо одному из действующих вас зарегистрировать")
                 # Регистрируем покупателя
                 elif choice_2 == '2':
+
                     customer = Customer() # Объект класса Покупатель
                     customer_name = input("Введите никнейм покупателя: ")
                     customer_login = input("Введите логин покупателя: ")
                     customer_password = input("Введите пароль покупателя: ")
                     customer_found = False  # Это надо, чтобы грамотно работали функции переборки файлов
+
                     if customer_found == False: # Если покупатель не найден, то пытаемся его найти при авторизации, чтобы проверить совпадения на уже существующих пользователей
                         # Открываем файл покупателя
                         with open('Customer.txt', 'r', encoding='utf-8') as file:
@@ -406,8 +409,10 @@ def main():
                                     print("\nТакой логин уже существует")
                                     customer_found = True
                                     break  # Прерываем цикл, так как уже найден существующий пользователь
+
                         # Если пользователь не найден, регистрируем его и сохраняем данные
                         if customer_found == False:
+
                             customer.nickname = customer_name
                             customer.login = customer_login
                             customer.password = customer_password
@@ -417,14 +422,16 @@ def main():
                                 'login': customer.login,
                                 'password': customer.password
                             }
+
                             shop.customers.append(customer_dict)  # Добавляем покупателя в список
                             shop.save_data_from_file(shop.customers, 'Customer.txt')
+
                             print(
                                 "\nВы успешно зарегистрировались, пройдите авторизацию снова, чтобы подтвердить ваши данные")
                         else:
                             print("\nПопробуйте зарегистрироваться заново, такой пользователь уже существует")
 
-            elif choice == '4': # Если пользвоатель выходит из программы
+            elif choice == '4': # Если пользователь выходит из программы
 
                 print("До свидания!")
 
@@ -444,8 +451,11 @@ def main():
                 return None
 
     def main_text():
+
         while True:
+
             User = authentication()
+
             while True:
                 if isinstance(User, Admin):
                     print("\nМеню:\n"
